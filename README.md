@@ -159,3 +159,106 @@ Slide deck layout suggestion:
 | CI/CD deployment (bonus)        | ⬜️ |
 | Client Presentation Slides      | ⬜️ |
 | Clear client-facing language    | ⬜️ |
+
+
+---
+
+## 🧱 MULTI-ENVIRONMENT ARCHITECTURE OVERVIEW
+
+### 🔄 Shared Strategy
+
+| Component            | Approach |
+|----------------------|----------|
+| Environments         | 3 Resource Groups (or Subscriptions): `Azure-Dev`, `Azure-QA`, `Azure-Prod` |
+| Isolation            | Separate VNets, subnets, NSGs for each |
+| Naming Convention    | E.g., `azure-prod-api`, `azure-qa-db`, `azure-dev-front` |
+| CI/CD                | GitHub Actions or Azure DevOps per branch (`main` → Prod, `qa` → QA, `dev` → Dev) |
+| IaC                  | Optional: Bicep / ARM / Terraform to define infrastructure as code |
+
+---
+
+## 🛡️ SECURITY ARCHITECTURE (With Tool Suggestions)
+
+Let's go **layer by layer** and suggest where your tools come in:
+
+---
+
+### 🔐 1. **IDENTITY & ACCESS MANAGEMENT (IAM)**
+
+| Element           | Tool / Service                  | Why |
+|-------------------|----------------------------------|-----|
+| Central IAM       | **Azure AD + RBAC**              | Enforce least-privilege access |
+| MFA               | **Azure AD MFA**                 | Standard for secure logins |
+| Secrets Handling  | **Azure Key Vault**              | Store API keys, DB passwords, certs securely |
+| Admin Access      | **Azure Bastion**                | Secure jump-box to access VMs without exposing RDP/SSH |
+
+✅ **Required for all 3 environments.**
+
+---
+
+### 🌐 2. **NETWORKING & FIREWALLING**
+
+| Layer                | Tool / Service                        | Why |
+|----------------------|----------------------------------------|-----|
+| Perimeter Protection | **Cloudflare WAF** or **Azure WAF**   | Block DDoS, bots, and OWASP Top 10 threats |
+| Intra-network Rules  | **NSGs + ASGs**                        | Enforce segmentation between tiers (FE/BE/DB) |
+| Firewall             | **Barracuda CloudGen Firewall** *(Optional)* | Extra control + analytics at the network edge |
+| VPN Replacement      | **Zscaler** *(Optional)*               | For secure private access during remote DevOps |
+
+⚠️ **Use Azure-native WAF unless Barracuda/Zscaler is part of enterprise stack or customer has budget.**
+
+---
+
+### 💾 3. **WORKLOAD SECURITY**
+
+| Component        | Tool / Service                                | Why |
+|------------------|------------------------------------------------|-----|
+| Endpoint/VM Sec  | **CrowdStrike** or **Trend Micro Cloud One**  | Protect against shell injection, malware, zero-day |
+| Code Protection  | **TOPIA** *(Optional)*                        | Vulnerability ranking and remediation guidance |
+| Logging & SIEM   | **Azure Sentinel** or **Splunk Enterprise Sec** | Real-time threat analytics, centralized logs |
+| Container Image Sec | Azure Defender + TOPIA                     | Scan app images before deployment |
+| Backup           | **Rubrik** *(Optional)*                       | Highly secure searchable backups for rollback |
+
+✅ Azure Defender + Trend Micro is solid out-of-the-box. Choose Splunk only if deep log analytics is a must.
+
+---
+
+### 🔍 4. **MONITORING, VISIBILITY & COMPLIANCE**
+
+| Tool/Service           | Why |
+|------------------------|-----|
+| **Azure Monitor + Log Analytics** | Performance + event monitoring |
+| **Azure Sentinel (SIEM)**         | Security analytics & threat intelligence |
+| **Orca Security** *(Optional)*    | Cloud security posture mgmt across environments |
+| **Databricks** *(Optional)*       | Not directly needed unless you're doing data science or ML workloads |
+
+✅ Azure-native tools cover most of your needs, but Orca or Splunk can add value for enterprise-level visibility.
+
+---
+
+## 📦 AZURE SERVICES USED PER ENVIRONMENT
+
+| Layer           | Service                          | Purpose |
+|------------------|----------------------------------|---------|
+| Frontend         | Azure Static Web App             | HTML/JS/CSS hosting |
+| Backend          | Azure App Service (Linux)        | Flask API |
+| Database         | Azure Cosmos DB (Mongo API)      | Scalable MongoDB |
+| Networking       | Azure VNet + NSG + App Gateway   | Network security and traffic control |
+| Secret Mgmt      | Azure Key Vault                  | Store secrets |
+| IAM              | Azure AD + RBAC                  | User & app access control |
+| DevOps           | GitHub Actions / Azure Pipelines | CI/CD |
+| Monitoring       | Azure Monitor + App Insights     | Logs, metrics, traces |
+
+---
+
+## 💡 BONUS STRATEGY (PROD-HARDENING ONLY)
+
+In **Production only**, we can recommend:
+
+- **CrowdStrike**: Lightweight endpoint security (for App Service + any deployed VMs).
+- **Cloudflare WAF**: DDoS + reverse-proxy security layer.
+- **Azure Front Door** (optional): CDN + WAF + global traffic management.
+- **Sentinel + Rubrik**: Advanced monitoring + reliable backups.
+- **Zscaler**: Only if a secure tunnel/VPN alternative is necessary.
+
+---
