@@ -159,13 +159,3 @@ Slide deck layout suggestion:
 | CI/CD deployment (bonus)        | ⬜️ |
 | Client Presentation Slides      | ⬜️ |
 | Clear client-facing language    | ⬜️ |
-
----
-
-Would you like me to:
-- Draft the **architecture diagram**?
-- Help build the **architectural document**?
-- Create the **PowerPoint presentation outline**?
-- Walk through **Azure setup** for the prototype?
-
-Let me know where you want to start, and we’ll build this step-by-step.
