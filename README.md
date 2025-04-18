@@ -262,3 +262,88 @@ In **Production only**, we can recommend:
 - **Zscaler**: Only if a secure tunnel/VPN alternative is necessary.
 
 ---
+
+## 🧱 Step-by-Step Architectural Design for Cool Delivery
+
+We’ll build this up in **layers** so your Draw.io diagram stays clean, organized, and security-driven.
+
+---
+
+### 🛡 1. **Identity & Access (IAM)**
+
+#### 🔹 Core Components:
+- **Azure Active Directory (AAD)** – Central identity provider.
+- **Role-Based Access Control (RBAC)** – Scoped by environment (Dev, QA, Prod).
+- **Multi-Factor Authentication (MFA)** – Enforced for all access.
+- **App Roles / Service Principals** – For app-to-app or CI/CD permissions.
+
+#### 👥 IAM Segmentation:
+| Role                   | Access Scope               |
+|------------------------|----------------------------|
+| Developer              | Dev + QA only              |
+| QA Engineer            | QA only                    |
+| DevOps Admin           | All environments           |
+| App Service Principal  | Scoped per environment     |
+| Database Admin         | DB only (CosmosDB roles)   |
+
+🔐 You’ll represent this in Draw.io with **AAD block**, connected to **each resource group** via RBAC lines.
+
+---
+
+### 🌐 2. **Network Segmentation**
+
+#### 🔹 Key Concepts:
+- **Virtual Network (VNet)** per environment.
+- **Subnets** to isolate frontend, backend, and DB tiers.
+- **NSGs (Network Security Groups)** to enforce port access.
+- **Private Endpoints** for Cosmos DB, Key Vault, etc.
+- **Azure Application Gateway** + **WAF** for frontend security.
+
+#### 📊 Per Environment:
+
+| Component        | Subnet         | Accessibility     |
+|------------------|----------------|-------------------|
+| Frontend (Static Web App) | Public       | Internet-facing   |
+| Backend (App Service)     | Internal     | Only frontend can reach |
+| DB (CosmosDB)             | Private Link | No public access  |
+
+💡 **VNet peering** is optional, but good for shared services (e.g., CI/CD, logging).
+
+---
+
+### 🧩 3. **App + DB Layout (Dev, QA, Prod)**
+
+You’ll have **3 isolated environments** (can be 3 separate resource groups or 3 resource folders inside 1 group):
+
+| Environment | Frontend           | Backend (Flask API)     | Database              |
+|-------------|--------------------|--------------------------|------------------------|
+| Development | Static Web App (Dev) | App Service Plan (Dev)   | Cosmos DB (Dev)        |
+| QA          | Static Web App (QA)  | App Service Plan (QA)    | Cosmos DB (QA)         |
+| Production  | Static Web App (Prod)| App Service Plan (Prod)  | Cosmos DB (Prod)       |
+
+Each layer is **independent**, allowing safe CI/CD without affecting other environments.
+
+---
+
+### 🛠 4. **Optional Azure Services (Highly Recommended)**
+
+| Service             | Purpose                               | Placement in Diagram      |
+|---------------------|---------------------------------------|----------------------------|
+| **Azure Key Vault** | Store API keys, DB strings, secrets   | One per environment or shared |
+| **Azure Monitor + Log Analytics** | Logs and metrics from App Service & DB | Connect all services to it |
+| **Azure Defender for Cloud** | Threat detection, recommendations | Global security layer |
+| **GitHub Actions** (CI/CD) | Pipeline to deploy code automatically | Draw external CI/CD connector |
+| **Azure Bastion** (optional) | Secure VM access (if using VMs) | Inside VNet only |
+
+---
+
+### 🧠 Draw.io Layout Tip
+
+To keep it clean:
+- **Group per environment** (Dev / QA / Prod) in rows or columns.
+- Use **colors** to distinguish layers: Identity, Network, App, Data, Monitoring.
+- Add **lock icons** or tags to represent security layers (e.g., private endpoint, RBAC).
+
+---
+
+
