@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { MapContainer, TileLayer, Marker, Polyline, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 const TrackOrder = () => {
   const [routeCoords, setRouteCoords] = useState([]);
 
-  const pickup = [13.024971649081763, 77.76129041102412]; // red rhino
-  const delivery = [13.017320178056604, 77.7680021208343]; // home
+  const pickup = useMemo(() => [13.024971649081763, 77.76129041102412], []);
+  const delivery = useMemo(() => [13.017320178056604, 77.7680021208343], []);
 
   const deliveryIcon = new L.Icon({
     iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
  
 const SearchResults = ({ query, onClose }) => {
@@ -7,7 +7,7 @@ const SearchResults = ({ query, onClose }) => {
   const resultsRef = useRef(null);
   const searchInputRef = useRef(null);
  
-const restaurants = [
+  const restaurants = useMemo(() => [
     {
       id: "65d24f1a4f1a6d4f1a6d4f1a",
       name: "Burger King",
@@ -20,91 +20,79 @@ const restaurants = [
       name: "Domino's Pizza",
       cuisine: ["Pizzas", "Italian", "Desserts"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431332/rmcdonals_penc4r.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f1c",
       name: "Haldiram's",
       cuisine: ["North Indian", "Sweets", "Snacks"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431388/rhaldiramji_psuibi.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f1d",
       name: "KFC",
       cuisine: ["Fried Chicken", "American", "Fast Food"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431348/rkfc_mg8weh.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f1e",
       name: "Varalakshmi Tiffins",
       cuisine: ["South Indian", "Tiffins"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431520/r_tiffins_lsb5me.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f1f",
       name: "CakeZone",
       cuisine: ["Bakery", "Desserts", "Cakes"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431547/rcake_srdzyu.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f2a",
       name: "Royal Juice Center",
       cuisine: ["Juices", "Beverages"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431428/rfruit_juice_llht8z.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f2b",
       name: "Ram Ki Bandi",
       cuisine: ["South Indian"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431369/rhomelymeals_cx89el.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f2c",
       name: "Nizams Khana Ghar",
       cuisine: ["North Indian", "Chinese"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431315/rmulticusine_gtuxui.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f2d",
       name: "Mithai Bhandar",
       cuisine: ["Mithai", "Desserts"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431277/rsweets_jsbdmv.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f2e",
       name: "Ali Tasty Hub",
       cuisine: ["Street Food", "Hyderabadi"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431297/rpista_a0penq.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
     {
       id: "65d24f1a4f1a6d4f1a6d4f2f",
       name: "FruitFull",
       cuisine: ["Healthy Food", "Desserts"],
       imageUrl: `https://res.cloudinary.com/de79vmsoa/image/upload/v1744431410/rfruits_lghxok.jpg`,
-          type: "delivery"
- 
+      type: "delivery"
     },
-   
-  ];
+  ], []);
  
   useEffect(() => {
     if (query.trim() === '') {
