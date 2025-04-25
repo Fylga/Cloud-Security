@@ -27,8 +27,14 @@ jobs:
           npm run build --if-present
           npm run test --if-present
 
+      - name: Move build output to root
+        run: |
+          cd ./frontend
+          mkdir -p ../dist
+          mv dist/* ../dist/
+
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./frontend/dist/*
+        run: zip -r release.zip ./dist/*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
