@@ -24,8 +24,8 @@ const Checkout = () => {
 
     const fetchCart = async () => {
       try {
-        const res = await axios.get(`https://food-delivery-gj0r.onrender.com/api/cart/${userId}`);
-        setCartItems(res.data?.items || []);
+        const response = await axios.get(`https://food-delivery-gj0r.onrender.com/api/cart/${userId}`);
+        setCartItems(response.data?.items || []);
       } catch (err) {
         console.error("Failed to fetch cart:", err);
         alert("Failed to load your cart items. Please try again later.");
@@ -62,7 +62,7 @@ const Checkout = () => {
         totalAmount: total,
       };
 
-      const res = await axios.post("https://food-delivery-gj0r.onrender.com/api/orders/create", orderData);
+      await axios.post("https://food-delivery-gj0r.onrender.com/api/orders/create", orderData);
       alert("Order placed successfully!");
       navigate("/payment");
     } catch (err) {

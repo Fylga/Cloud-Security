@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FiSearch, FiMapPin, FiUser, FiChevronDown } from 'react-icons/fi';
 import './Header.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SearchResults from './searchResults';
 
 const Header = ({ onTabChange, activeTab, onDeliveryDoubleClick }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if the user is logged in when the component mounts

@@ -121,7 +121,7 @@ const restaurants = [
     });
  
     setSearchResults(results);
-  }, [query]);
+  }, [query, restaurants]);
  
   const handleRestaurantClick = (id, event) => {
     if (event.type === 'contextmenu') {

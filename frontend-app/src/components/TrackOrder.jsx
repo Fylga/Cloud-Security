@@ -4,7 +4,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Link } from "react-router-dom";
 
-
 const TrackOrder = () => {
   const [routeCoords, setRouteCoords] = useState([]);
 
@@ -33,7 +32,7 @@ const TrackOrder = () => {
     };
 
     fetchRoute();
-  }, []);
+  }, [pickup, delivery]); // Add pickup and delivery to the dependency array
 
   // Inline Styles
   const styles = {
@@ -107,8 +106,8 @@ const TrackOrder = () => {
           <p><strong>Delivery Partner:</strong> Rahul (2 km away)</p>
           <p><strong>ETA:</strong> 12 minutes</p>
           <Link to="/">
-  <button>back to home</button>
-</Link>
+            <button>back to home</button>
+          </Link>
         </div>
       </div>
 
